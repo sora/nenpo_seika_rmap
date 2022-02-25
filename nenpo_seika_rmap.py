@@ -98,6 +98,8 @@ class Rmap:
         #                return None
         #        except ValueError:
         #            pass
+        if date_string == None:
+            return None
         for dfmt in date_fmt:
             try:
                 return datetime.datetime.strptime(date_string, dfmt)
@@ -122,7 +124,10 @@ class Rmap:
             seika_item['info']['seika_type'] = seika_type  # info:seika_type
             seika_item['info']['user_id'] = self.user_id  # info:user_id
             seika_item['info']['researcher_name'] = researcher_name  # info:researcher_name
-            seika_item['info']['date'] = rmap_item[date_key_name]  # info:date
+            if date_key_name in rmap_item:  # info:date
+                seika_item['info']['date'] = rmap_item[date_key_name]
+            else:
+                seika_item['info']['date'] = None
             for item_name, func in func_seika['info']:  # info:else
                 if item_name in rmap_item:
                     seika_item['info'][item_name] = func(rmap_item[item_name])
